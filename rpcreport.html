@@ -114,11 +114,11 @@ In my program, I have two serializer files to help me handle the read and write 
 <h4>Explain for basicTypeHandler: </h4>
 <b>1. send/read string type: </b><br />
 On the sender side, it sends the length of the string first, and then sends the actual content of the string.<br />
-On the receiver side, it reads the length of the string first, and builds a buffer with that length. And final read the string content from sender to the buffer.
+On the receiver side, it reads the length of the string first, and builds a buffer with that length. And finally read the content from sender to the buffer.
 <br />
 <br />
 <b>2. send/read int type: </b><br />
-I use "htonl" and "ntohl" to handle the read and send for int type data. The reason is explained in the following question.
+I use "htonl" and "ntohl" to handle the read and send for int type data. The reason is explained in question 3.
 <br />
 <br />
 <b>3. send/read float type: </b><br />
@@ -135,10 +135,10 @@ I borrow the read function name from our start code provided by Noah. And use a 
 <br />
 <br />
 <h4>Explain for xxx.additionalTypeHandler: </h4>
-Based on the given IDL file, my rpcgenerate program will build this file for handling arrays and structs defined in the IDL file. Since all the arrays and structs are made from the basic built-in types, I build the "send/read array" and "send/read struct" just upon "send/read built-in type". <br />
+Based on the given IDL file, my rpcgenerate program will build this helper functions file to handle the send/read functions for arrays and structs defined in the given IDL file. Since all the arrays and structs are made from the basic built-in types, I build the "send/read array" and "send/read struct" just upon "send/read built-in type". <br />
 <b>1. send/read array: </b><br />
-On the sender side, first find the basic type of the given array's element and build the for loop for iterating each element based on the array's bound. Then call the send function for that type to send the elements one by one in order.Since we use TCP, these elements will be guaranteed to be delivered in order.<br />
-On the receiver side, its read function takes an additional parameter, which is an array with the same construct as the array it is going to read. Since we cannot return an array properly, the only way to solve it is to fill the array's value into a given array parameter. Then it just needs to build the for loop for reading the coming values one by one in order. Since we use TCP, every elemnet is received in order without any loss data. This can guarantee us to have the same content.
+On the sender side, first find the given array's element type and build the for loop for iterating each element based on the array's bounds. Then call the send function for that type to send the elements one by one in order. Since we use TCP, these elements will be guaranteed to be delivered in order.<br />
+On the receiver side, its read function takes an additional parameter, which is an array with the same construct as the array it is going to read. Since we cannot return an array properly, the only way to solve it is to fill the array's value into the given array parameter. Then it just needs to build the for loop for reading the coming values one by one in order. Since we use TCP, every elemnet is received in order without any loss data. This can make sure that we will have all the elements of the array sent from the sender side.
 <br />
 <br />
 <b>2. send/read struct: </b><br />
@@ -149,9 +149,9 @@ Just loop once of all members of the struct, and send/read each member based on 
 Since we use TCP, everything will be guaranteed to be delivered in order. Therefore, on proxy side, we just need to make sure send everything in the order we want, and on stub side, read everything in the same order.<br />
 <b>From proxy side</b>, I send each function request call in the following order:
 <br />
-1. send the function name to stub <br />
-2. iterate function's arguments and send them one by one in order <br />
-3. based on the function's return type, read and return the result from stub <br />
+1. Send the function name to stub <br />
+2. Iterate function's arguments and send them one by one in order <br />
+3. Based on the function's return type, read and return the result from stub <br />
 <br />
 <b>From stub side</b>, iterate each function and build each procedure in the following order: <br />
 1. Read the function name from proxy <br />
@@ -162,13 +162,13 @@ Since we use TCP, everything will be guaranteed to be delivered in order. Theref
 
 <li class="q">Did you get help from anyone other than your teammate? If "yes", then briefly explain who helped you and how.</li>
 <li class="a">
-I got some help and inspired from a discussion about sending and reading int over TCP on stackoverflow. The way I used to do was to convert int to a fixed 32 length char* and then send it over the Internet. But when I tested my program, I found when I sent a large number of integers in row, the received data could be messed up. I guess it might be caused by the read buffer length. I think I also had similar problem in my FileCopy project. My FileCopy project cannot handler small size files with fixed read buffer length 512. Then I used the solution "htonl and ntohl" from stackoverflow. This idea also inspired me to come up with the solution for send/read string type. Instead of converting the string to char*, sending it directly and reading it to a fixed 256 length buffer, I send the length of the string first, and build the read buffer with this length on the receiver side. Finally, read the char* to this buffer. The other thing I borrowed from stackoverflow is the helper function for splitting a c++ string. Since I had a bad experience with "strtok" in FileCopy project. This time I use the helper "split" function to split a c++ string directly into a c++ vector. I also got help on building my Makefile from Noah.
+I got some help and inspired from a discussion about sending and reading int over TCP on stackoverflow. The way I used to do was to convert int to a fixed 32 length char* and then send it over the Internet. But when I tested my program, I found when I sent a large number of integers in row, the received data could be messed up. I guess it might be caused by the fixed read buffer length. I think I also had similar problem in my FileCopy project. My FileCopy project cannot handler small size files with fixed read buffer length 512. Then I used the solution "htonl and ntohl" from stackoverflow to solve this problem. This idea also inspired me to come up with the solution for send/read string type. Instead of converting the string to char*, sending it directly and reading it to a fixed 256 length buffer, I send the length of the string first, and build the read buffer with this length on the receiver side. Then, read the char* to this buffer. The other thing I borrowed from stackoverflow is the helper function for splitting a c++ string. Since I had a bad experience with "strtok" in FileCopy project. This time I use the "split" helper function to split a c++ string directly into a c++ vector. I also got help on building my Makefile from Noah.
 </li>
 
 
 <li class="q">(optional) Do you have any other comments on this assignment (e.g. was it worthwhile, what did you learn from it, do you have suggestions for improvment if the course is offered again)?</li>
 <li class="a">
-When we discussed about this project in class, the solution for handling arrays and structs I came up with was to build one big packet which contains all the stuff in the struct or array, and send it over the Internet. One the other side, we unpacket it and insert each part to the corresponding place. When I used this method to build my first version of rpcgenerate program, I found this was really a bad idea. It was really annoying to build this big packet and the unpacket work was horrible. And if we have a really huge array or struct, things would become worse. At that time, I realized in my design I just used the reliable property of TCP. I did not design anything related to the ordered property of TCP. After realizing the ordered property of TCP, I designed my current solution, send/read every smallest component in order, since we can control this over TCP. The coding part of this project was not that hard, but we really needed to spend a lot of time designning the protocol. Once we were on the right track, things would become easier. 
+When we discussed about this project in class, the solution for handling arrays and structs I came up with was to build one big packet which contains all the stuff in the struct or array, and send it over the Internet. On the other side, we unpacket it and insert each part to the corresponding place. When I used this method to build my first version of rpcgenerate program, I found this was really a bad idea. It was really annoying to build this big packet and the unpacket work was horrible. And if we have a really huge array or struct, things would become worse. At that time, I realized in my design I just used the reliable property of TCP. I did not design anything related to the ordered property of TCP. After realizing the ordered property of TCP, I designed my current solution. For any struct or array, send/read each basic element or member in a packet in order. The coding part of this project was not that hard, but we really needed to spend a lot of time designning the protocol. Once we were on the right track, things would become easier. 
 </li>
 
 </ol>
