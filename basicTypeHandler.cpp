@@ -67,9 +67,6 @@ string readstringType (C150StreamSocket *socket) {
 void sendintType (C150StreamSocket *socket, int intData) {
 	uint32_t netIntData = htonl(intData);
   socket->write((char*) &netIntData, sizeof(uint32_t));
-  /*char intBuffer[16];
-  sprintf(intBuffer, "%d", intData);
-  socket->write(intBuffer, 16);*/
 }
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
@@ -86,10 +83,6 @@ int readintType (C150StreamSocket *socket) {
   socket->read((char*) &netIntData, sizeof(uint32_t));
   uint32_t hostIntData = ntohl(netIntData);
   return hostIntData;
-  /*char intBuffer[16];
-  socket->read(intBuffer, 16);
-  int intData = atoi(intBuffer);
-  return intData;*/
 }
 
 
@@ -103,9 +96,9 @@ int readintType (C150StreamSocket *socket) {
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
 
 void sendfloatType (C150StreamSocket *socket, float floatData) {
-	char floatBuffer[16];
+	char floatBuffer[32];
 	sprintf(floatBuffer, "%f", floatData);
-	socket->write(floatBuffer, 16);
+	socket->write(floatBuffer, 32);
 }
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
@@ -118,8 +111,8 @@ void sendfloatType (C150StreamSocket *socket, float floatData) {
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
 
 float readfloatType (C150StreamSocket *socket) {
-	char floatBuffer[16];
-	socket->read(floatBuffer, 16);
+	char floatBuffer[32];
+	socket->read(floatBuffer, 32);
 	float floatData = atof(floatBuffer);
 	return floatData;
 }
@@ -134,7 +127,8 @@ float readfloatType (C150StreamSocket *socket) {
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
 
 void sendvoidType (C150StreamSocket *socket) {
-  sendintType(socket, 0);
+  string msg = "void";
+  sendstringType(socket, msg);
 }
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
@@ -147,7 +141,7 @@ void sendvoidType (C150StreamSocket *socket) {
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
 
 void readvoidType (C150StreamSocket *socket) {
-  readintType(socket);
+  readstringType(socket);
 }
 
 

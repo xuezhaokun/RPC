@@ -37,21 +37,47 @@ CPPFLAGS = -g -Wall -Werror -I$(C150IDSRPC) -I$(C150LIB) -std=c++11
 
 
 LDFLAGS = 
-INCLUDES = $(C150LIB)c150streamsocket.h $(C150LIB)c150network.h $(C150LIB)c150exceptions.h $(C150LIB)c150debug.h $(C150LIB)c150utility.h $(C150LIB)c150grading.h $(C150IDSRPC)IDLToken.h $(C150IDSRPC)tokenizeddeclarations.h  $(C150IDSRPC)tokenizeddeclaration.h $(C150IDSRPC)declarations.h $(C150IDSRPC)declaration.h $(C150IDSRPC)functiondeclaration.h $(C150IDSRPC)typedeclaration.h $(C150IDSRPC)arg_or_member_declaration.h rpcproxyhelper.h rpcstubhelper.h structs.idl 
+INCLUDES = $(C150LIB)c150streamsocket.h $(C150LIB)c150network.h $(C150LIB)c150exceptions.h $(C150LIB)c150debug.h $(C150LIB)c150utility.h $(C150LIB)c150grading.h $(C150IDSRPC)IDLToken.h $(C150IDSRPC)tokenizeddeclarations.h  $(C150IDSRPC)tokenizeddeclaration.h $(C150IDSRPC)declarations.h $(C150IDSRPC)declaration.h $(C150IDSRPC)functiondeclaration.h $(C150IDSRPC)typedeclaration.h $(C150IDSRPC)arg_or_member_declaration.h rpcproxyhelper.h rpcstubhelper.h 
 
-all: rpcgenerate structsclient structsserver
+all: rpcgenerate
 
-structsclient: structsclient.o rpcproxyhelper.o basicTypeHandler.o structs.additionalTypeHandler.o structs.proxy.o  $(C150AR) $(C150IDSRPCAR) $(INCLUDES)
-	$(CPP) -o structsclient structsclient.o rpcproxyhelper.o basicTypeHandler.o structs.additionalTypeHandler.o structs.proxy.o  $(C150AR) $(C150IDSRPCAR) 
+#structsclient: structsclient.o rpcproxyhelper.o basicTypeHandler.o structs.additionalTypeHandler.o structs.proxy.o  $(C150AR) $(C150IDSRPCAR) $(INCLUDES)
+#	$(CPP) -o structsclient structsclient.o rpcproxyhelper.o basicTypeHandler.o structs.additionalTypeHandler.o structs.proxy.o  $(C150AR) $(C150IDSRPCAR) 
 
 # The following is NOT a mistake. The main program for any of the rpc servers
 # is rpcserver.o.  This way, we can make a different one for each set 
 # of functions, by linking the right specific stugs (in this case
 # simplefunction.stub.o)
-structsserver: structs.stub.o rpcserver.o rpcstubhelper.o basicTypeHandler.o structs.additionalTypeHandler.o structs.o  $(C150AR) $(C150IDSRPCAR) $(INCLUDES)
-	$(CPP) -o structsserver rpcserver.o structs.stub.o basicTypeHandler.o structs.additionalTypeHandler.o structs.o rpcstubhelper.o $(C150AR) $(C150IDSRPCAR) 
+#structsserver: structs.stub.o rpcserver.o rpcstubhelper.o basicTypeHandler.o structs.additionalTypeHandler.o structs.o  $(C150AR) $(C150IDSRPCAR) $(INCLUDES)
+#	$(CPP) -o structsserver rpcserver.o structs.stub.o basicTypeHandler.o structs.additionalTypeHandler.o structs.o rpcstubhelper.o $(C150AR) $(C150IDSRPCAR) 
 
+########################################################################
+#
+#          General rules for building any client and server
+#
+#     Given any xxx.idl, these rules will build xxxclient and xxxserver
+#
+#     THESE RULES ARE SUPPLIED COMMENTED BECAUSE THEY WILL BREAK
+#     IF USED BEFORE rpcgenerate IS AVAILABLE.
+#
+#     WHEN YOUR RPCGENERATE IS WORKING, DO THE FOLLOWING
+#
+#       1) Uncomment the rules below
+#
+#       2) Add to each of the dependency lists and the g++ invocations
+#          any .o files that you need to link into clients and servers
+#          respectively.
+#
+#
+########################################################################
 
+# Compile / link any client executable: 
+%client: %.o %.proxy.o rpcserver.o rpcproxyhelper.o basicTypeHandler.o %.additionalTypeHandler.o %client.o %.proxy.o
+	$(CPP) -o $@ $@.o rpcproxyhelper.o basicTypeHandler.o $*.additionalTypeHandler.o $*.proxy.o $(C150AR) $(C150IDSRPCAR) 
+
+# Compile / link any server executable:
+%server: %.o %.stub.o rpcserver.o rpcstubhelper.o basicTypeHandler.o %.additionalTypeHandler.o %.stub.o
+	$(CPP) -o $@ rpcserver.o $*.stub.o $*.o rpcstubhelper.o basicTypeHandler.o $*.additionalTypeHandler.o $(C150AR) $(C150IDSRPCAR)
 ########################################################################
 #
 #          Generate C++ source from IDL files
@@ -71,12 +97,13 @@ structsserver: structs.stub.o rpcserver.o rpcstubhelper.o basicTypeHandler.o str
 #
 ########################################################################
 
-%.proxy.cpp %.stub.cpp %.additionalTypeHandler.cpp:%.idl $(RPCGEN)
+%.proxy.cpp %.stub.cpp %.additionalTypeHandler.cpp %.additionalTypeHandler.h:%.idl $(RPCGEN)
 	$(RPCGEN) $<
 
 rpcgenerate: rpcgenerate.o $(C150AR) $(C150IDSRPCAR) $(INCLUDES)
 	$(CPP) -o rpcgenerate rpcgenerate.o $(C150AR) $(C150IDSRPCAR)
 
+.PRECIOUS: %.proxy.cpp %.stub.cpp
 ########################################################################
 #
 #                   Housekeeping
@@ -93,6 +120,6 @@ rpcgenerate: rpcgenerate.o $(C150AR) $(C150IDSRPCAR) $(INCLUDES)
 
 # clean up everything we build dynamically (probably missing .cpps from .idl)
 clean:
-	 rm -f rpcgenerate structsclient structsserver *.o
+	 rm -f rpcgenerate *.o 
 
 

@@ -154,8 +154,8 @@ main(int argc, char *argv[]) {
        // Call (possibly remote) multiply
        //
        printf("Calling multiply(10.0,3.5)\n");
-       float f = multiply(10.0,3.5);                          // remote call (we hope!)
-       printf("Returned from multiply(10.0,3.5). Result=%f\n",f);
+       float f = multiply(10.0, 3.5, 2.3, 3.14, 1.6);                          // remote call (we hope!)
+       printf("Returned from multiply(10.0, 3.5, 2.3, 3.14, 1.6). Result=%f\n",f);
 
        // 
        // Call (possibly remote) divide
@@ -221,6 +221,24 @@ main(int argc, char *argv[]) {
 
        int personAge = findSecondPersonAge(persons);
        printf("Returned from findSecondPersonAge(s1_test). Result=%d\n",personAge);
+
+       printf("Calling func1()\n");
+       func1();                          // remote call (we hope!)
+       printf("Returned from func1()\n");
+
+       // 
+       // Call (possibly remote) func2
+       //
+       printf("Calling func2()\n");
+       func2();                          // remote call (we hope!)
+       printf("Returned from func2()\n");
+
+       // 
+       // Call (possibly remote) func3
+       //
+       printf("Calling func3()\n");
+       func3();                          // remote call (we hope!)
+       printf("Returned from func3()\n");
 
      }
 

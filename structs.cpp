@@ -22,6 +22,7 @@
 #include <iostream>
 using namespace std;          // for C++ std library
 #include "structs.idl"
+#include "c150debug.h"
 
 Person findPerson(ThreePeople tp){
 	return tp.p1;
@@ -31,8 +32,8 @@ int area(rectangle r){
 	return (r.x * r.y);
 }
 
-float multiply(float x, float y) {
-  return x*y;
+float multiply(float a, float b, float c, float d, float e) {
+  return a*b*c*d*e;
 }
 
 float divide(float x, float y) {
@@ -62,4 +63,19 @@ int sumSm(sm stest) {
 int findSecondPersonAge(StructWithArrays persons){
 	//Person p2 = persons.people[1];
 	return persons.people[1].age;
+}
+
+void func1() {
+  printf("func1() invoked\n");
+  c150debug->printf(C150RPCDEBUG,"simplefunction.cpp: func1() invoked");
+}
+
+void func2() {
+  printf("func2() invoked\n");				  
+  c150debug->printf(C150RPCDEBUG,"simplefunction.cpp: func2() invoked");
+}
+
+void func3() {
+  printf("func3() invoked\n");
+  c150debug->printf(C150RPCDEBUG,"simplefunction.cpp: func3() invoked");
 }

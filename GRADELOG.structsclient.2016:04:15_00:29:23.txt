@@ -1,0 +1,55 @@
+THIS IS LOG FILE: GRADELOG.structsclient.2016:04:15_00:29:23.txt
+Grading log started on 04/15/2016 00:29:23.888745 Command line = [./structsclient COMP150IDS-02]
+ PROXY: start sending request for function, findPerson
+ PROXY: send function argument, tp
+ PROXY: read result from stub for function, findPerson
+----------------------------------------
+ PROXY: start sending request for function, area
+ PROXY: send function argument, r
+ PROXY: read result from stub for function, area
+----------------------------------------
+ PROXY: start sending request for function, multiply
+ PROXY: send function argument, a
+ PROXY: send function argument, b
+ PROXY: send function argument, c
+ PROXY: send function argument, d
+ PROXY: send function argument, e
+ PROXY: read result from stub for function, multiply
+----------------------------------------
+ PROXY: start sending request for function, divide
+ PROXY: send function argument, x
+ PROXY: send function argument, y
+ PROXY: read result from stub for function, divide
+----------------------------------------
+ PROXY: start sending request for function, add
+ PROXY: send function argument, x
+ PROXY: send function argument, y
+ PROXY: send function argument, z
+ PROXY: read result from stub for function, add
+----------------------------------------
+ PROXY: start sending request for function, subtract
+ PROXY: send function argument, x
+ PROXY: send function argument, y
+ PROXY: read result from stub for function, subtract
+----------------------------------------
+ PROXY: start sending request for function, searchRectangles
+ PROXY: send function argument, rects
+ PROXY: read result from stub for function, searchRectangles
+----------------------------------------
+ PROXY: start sending request for function, sumSm
+ PROXY: send function argument, stest
+ PROXY: read result from stub for function, sumSm
+----------------------------------------
+ PROXY: start sending request for function, findSecondPersonAge
+ PROXY: send function argument, persons
+ PROXY: read result from stub for function, findSecondPersonAge
+----------------------------------------
+ PROXY: start sending request for function, func1
+ PROXY: read result from stub for function, func1
+----------------------------------------
+ PROXY: start sending request for function, func2
+ PROXY: read result from stub for function, func2
+----------------------------------------
+ PROXY: start sending request for function, func3
+ PROXY: read result from stub for function, func3
+----------------------------------------

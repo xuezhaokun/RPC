@@ -214,7 +214,7 @@ generateRPCStub (FILE *stubFile, Declarations parseTree) {
 	}
 	// function call for bad function name
 	string badFunction = "void __badFunction(char *functionName){\n";
-  	badFunction += "\t*GRADING << \"Bad Request Call!!!\" << endl;\n";
+  	badFunction += "\t*GRADING << \"STUB: Bad Request Call!!!\" << endl;\n";
 	badFunction += "\tchar doneBuffer[5] = \"BAD\";\n";
   	badFunction += "\t*GRADING << \"----------------------------------------\" << endl;\n";
 	badFunction += "\tRPCSTUBSOCKET->write(doneBuffer, strlen(doneBuffer)+1);\n}\n";

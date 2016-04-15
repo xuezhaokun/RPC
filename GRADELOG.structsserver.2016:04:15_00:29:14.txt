@@ -1,0 +1,67 @@
+THIS IS LOG FILE: GRADELOG.structsserver.2016:04:15_00:29:14.txt
+Grading log started on 04/15/2016 00:29:14.930204 Command line = [./structsserver]
+ STUB: start receiving request for function, findPerson
+ STUB: read argument, tp
+ STUB: make actual function call for function, findPerson
+ STUB: send result back to proxy.
+----------------------------------------
+ STUB: start receiving request for function, area
+ STUB: read argument, r
+ STUB: make actual function call for function, area
+ STUB: send result back to proxy.
+----------------------------------------
+ STUB: start receiving request for function, multiply
+ STUB: read argument, a
+ STUB: read argument, b
+ STUB: read argument, c
+ STUB: read argument, d
+ STUB: read argument, e
+ STUB: make actual function call for function, multiply
+ STUB: send result back to proxy.
+----------------------------------------
+ STUB: start receiving request for function, divide
+ STUB: read argument, x
+ STUB: read argument, y
+ STUB: make actual function call for function, divide
+ STUB: send result back to proxy.
+----------------------------------------
+ STUB: start receiving request for function, add
+ STUB: read argument, x
+ STUB: read argument, y
+ STUB: read argument, z
+ STUB: make actual function call for function, add
+ STUB: send result back to proxy.
+----------------------------------------
+ STUB: start receiving request for function, subtract
+ STUB: read argument, x
+ STUB: read argument, y
+ STUB: make actual function call for function, subtract
+ STUB: send result back to proxy.
+----------------------------------------
+ STUB: start receiving request for function, searchRectangles
+ STUB: read argument, rects
+ STUB: make actual function call for function, searchRectangles
+ STUB: send result back to proxy.
+----------------------------------------
+ STUB: start receiving request for function, sumSm
+ STUB: read argument, stest
+ STUB: make actual function call for function, sumSm
+ STUB: send result back to proxy.
+----------------------------------------
+ STUB: start receiving request for function, findSecondPersonAge
+ STUB: read argument, persons
+ STUB: make actual function call for function, findSecondPersonAge
+ STUB: send result back to proxy.
+----------------------------------------
+ STUB: start receiving request for function, func1
+ STUB: make actual function call for function, func1
+ STUB: send result back to proxy.
+----------------------------------------
+ STUB: start receiving request for function, func2
+ STUB: make actual function call for function, func2
+ STUB: send result back to proxy.
+----------------------------------------
+ STUB: start receiving request for function, func3
+ STUB: make actual function call for function, func3
+ STUB: send result back to proxy.
+----------------------------------------
